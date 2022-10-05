@@ -45,12 +45,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     
-/*
-    protected static function booted()
-    {
-        static::addGlobalScope(new OrderByScope);
-    }
-*/
     /**
      * Get the name of the index associated with the model.
      *
