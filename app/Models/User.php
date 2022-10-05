@@ -44,13 +44,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
-/*
-    protected static function booted()
-    {
-        static::addGlobalScope(new OrderByScope);
-    }
-*/
+
+    public $asYouType = true;
+
     /**
      * Get the name of the index associated with the model.
      *
@@ -68,8 +64,9 @@ class User extends Authenticatable
      */
     public function toSearchableArray()
     {
-        $array['name'] = $this->name;
-        $array['email'] = $this->email;
+        $array['id']      = $this->id;
+        $array['name']    = $this->name;
+        $array['email']   = $this->email;
         $array['address'] = $this->address;
  
         return $array;
