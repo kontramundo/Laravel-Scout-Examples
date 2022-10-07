@@ -12,9 +12,22 @@ class Users extends Component
 
     public $search = '';
 
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
-        $users = User::search($this->search)->orderBy('name', 'ASC')->paginate(10);
+        //$users = User::search($this->search)->orderBy('name', 'ASC')->paginate(10);
+
+
+        $users = User::search($this->search, function($meilisearch, $query, $options){
+                
+            $options['sort'] = ['name:asc'];
+            return $meilisearch->search($query, $options);
+
+        })->paginate(10);
 
         return view('livewire.users', compact('users'));
     }
