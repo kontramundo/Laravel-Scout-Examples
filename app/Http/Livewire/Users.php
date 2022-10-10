@@ -14,7 +14,22 @@ class Users extends Component
 
     public function render()
     {
-        $users = User::search($this->search)->orderBy('name', 'ASC')->paginate(10);
+        $users = new User;
+
+
+        if ($this->search) 
+        {
+            $users = User::search($this->search, function ($typesense, $query, $options) {
+                
+                //$options['sort_by'] = 'name:asc';
+                $options['min_len_1typo'] = 2;
+                $options['min_len_2typo'] = 5;
+         
+                return $typesense->search($options);
+            });
+        }
+
+        $users = $users->paginate(10);
 
         return view('livewire.users', compact('users'));
     }

@@ -8,9 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
-use App\Scopes\OrderByScope;
+use Typesense\LaravelTypesense\Interfaces\TypesenseDocument;
 
-class User extends Authenticatable
+
+class User extends Authenticatable implements TypesenseDocument
 {
     use HasApiTokens, HasFactory, Notifiable, Searchable;
 
@@ -68,10 +69,57 @@ class User extends Authenticatable
      */
     public function toSearchableArray()
     {
-        $array['name'] = $this->name;
-        $array['email'] = $this->email;
-        $array['address'] = $this->address;
- 
-        return $array;
+        return array_merge(
+            $this->toArray(), 
+            [
+                // Cast id to string and turn created_at into an int32 timestamp
+                // in order to maintain compatibility with the Typesense index definition below
+                'id' => (string) $this->id,
+                'created_at' => $this->created_at->timestamp,
+            ]
+        );
     }
+
+     /**
+     * The Typesense schema to be created.
+     *
+     * @return array
+     */
+    public function getCollectionSchema(): array {
+        return [
+            'name' => $this->searchableAs(),
+            'fields' => [
+                [
+                    'name' => 'id',
+                    'type' => 'string',
+                ],
+                [
+                    'name' => 'name',
+                    'type' => 'string',
+                    'sort' =>  true
+                ],
+                [
+                    'name' => 'email',
+                    'type' => 'string',
+                ],
+                [
+                    'name' => 'address',
+                    'type' => 'string',
+                ],
+            ]
+        ];
+    }
+
+     /**
+     * The fields to be queried against. See https://typesense.org/docs/0.21.0/api/documents.html#search.
+     *
+     * @return array
+     */
+    public function typesenseQueryBy(): array {
+        return [
+            'name',
+            'email',
+            'address',
+        ];
+    }    
 }
