@@ -21,7 +21,7 @@ class Users extends Component
         {
             $users = User::search($this->search, function ($typesense, $query, $options) {
                 
-                //$options['sort_by'] = 'name:asc';
+                $options['sort_by'] = 'name:asc';
                 $options['min_len_1typo'] = 2;
                 $options['min_len_2typo'] = 5;
          
