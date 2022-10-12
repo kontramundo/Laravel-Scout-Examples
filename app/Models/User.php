@@ -64,7 +64,18 @@ class User extends Authenticatable
         $array['name'] = $this->name;
         $array['email'] = $this->email;
         $array['address'] = $this->address;
+        $array['role'] = $this->role->name;
  
         return $array;
+    }
+
+    protected function makeAllSearchableUsing($query)
+    {
+        return $query->with('role');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 }

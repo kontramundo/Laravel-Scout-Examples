@@ -9,6 +9,7 @@
                 <th class="p-2">User</th>
                 <th class="p-2">Email</th>
                 <th class="p-2">Address</th>
+                <th class="p-2">Role</th>
             </tr>
         </thead>
         <tbody>
@@ -18,6 +19,7 @@
                     <td class="p-2 space-y-2">{{ $user->name }}</td>
                     <td class="p-2 space-y-2">{{ $user->email }}</td>
                     <td class="p-2 space-y-2">{{ $user->address }}</td>
+                    <td class="p-2 space-y-2">{{ $user->role->name }}</td>
                 </tr>
             @endforeach
         </tbody>
