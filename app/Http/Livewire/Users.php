@@ -21,10 +21,10 @@ class Users extends Component
     {
         //$users = User::search($this->search)->orderBy('name', 'ASC')->paginate(10);
 
-
         $users = User::search($this->search, function($meilisearch, $query, $options){
                 
             $options['sort'] = ['name:asc'];
+            //$options['filter'] = ['role = Supervisor'];
             return $meilisearch->search($query, $options);
 
         })->paginate(10);

@@ -28,14 +28,19 @@ class ScoutServiceProvider extends ServiceProvider
         $client->index('users_index')->updateSettings([
             'sortableAttributes' => [
                 'name',
-            ]
-        ]);
-
-        $client->index('users_index')->updateTypoTolerance([
-            'minWordSizeForTypos' => [
-                'oneTypo' => 2,
-                'twoTypos' => 5
-            ]
+            ],
+            'filterableAttributes' => [
+                'role'
+            ],
+            'typoTolerance' => [
+                'minWordSizeForTypos' => [
+                  'oneTypo' => 2,
+                  'twoTypos' => 5
+                ]
+            ],
+            'pagination' => [
+                'maxTotalHits' => 100000
+            ],
         ]);
     }
 }
