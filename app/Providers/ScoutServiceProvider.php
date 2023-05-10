@@ -24,8 +24,11 @@ class ScoutServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $client = new Client(env('MEILISEARCH_HOST'));
+        $client = new Client(env('MEILISEARCH_HOST'), env('MEILISEARCH_KEY'));
         $client->index('users_index')->updateSettings([
+            'sortableAttributes' => [
+                'name',
+            ],
             'filterableAttributes' => [
                 'role'
             ],
