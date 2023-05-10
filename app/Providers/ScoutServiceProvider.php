@@ -26,9 +26,6 @@ class ScoutServiceProvider extends ServiceProvider
     {
         $client = new Client(env('MEILISEARCH_HOST'));
         $client->index('users_index')->updateSettings([
-            'sortableAttributes' => [
-                'name',
-            ],
             'filterableAttributes' => [
                 'role'
             ],
