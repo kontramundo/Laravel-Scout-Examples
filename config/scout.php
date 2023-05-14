@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 return [
 
     /*
@@ -132,6 +134,25 @@ return [
     'meilisearch' => [
         'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
         'key' => env('MEILISEARCH_KEY', null),
+        'index-settings' => [
+            User::class => [
+                'sortableAttributes' => [
+                    'name',
+                ],
+                'filterableAttributes' => [
+                    'role'
+                ],
+                'typoTolerance' => [
+                    'minWordSizeForTypos' => [
+                        'oneTypo' => 2,
+                        'twoTypos' => 5
+                    ]
+                ],
+                'pagination' => [
+                    'maxTotalHits' => 100000
+                ],
+            ],
+        ],
     ],
 
 ];
